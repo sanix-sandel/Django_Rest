@@ -14,6 +14,8 @@ from rest_framework import filters
 from django_filters import AllValuesFilter, DateTimeFilter, NumberFilter
 from django_filters.rest_framework import FilterSet
 
+from rest_framework.throttling import ScopedRateThrottle
+
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -30,11 +32,15 @@ class EsrbRatingList(generics.ListCreateAPIView):
     filterset_fields = ('description',)
     search_fields = ('^description',)
     ordering_fields = ('description',)
+    throttle_scope = 'esrb-ratings'
+    throttle_classes = (ScopedRateThrottle,)
     name = 'esrbrating-list'
 
 class EsrbRatingDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = EsrbRating.objects.all()
     serializer_class = EsrbRatingSerializer
+    throttle_scope = 'esrb-ratings'
+    throttle_classes = (ScopedRateThrottle,)
     name = 'esrbrating-detail'
 
 class GameList(generics.ListCreateAPIView):
