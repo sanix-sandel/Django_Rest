@@ -2,7 +2,7 @@ from django.db import models
 
 
 class EsrbRating(models.Model):
-    description=models.CharField(max_length=200)
+    description=models.CharField(max_length=200, unique=True)
 
     class Meta:
         ordering=('description',)
@@ -12,7 +12,7 @@ class EsrbRating(models.Model):
 
 class Game(models.Model):
     created_timestamp = models.DateTimeField(auto_now_add=True)
-    name = models.CharField(max_length=200, default='')
+    name = models.CharField(max_length=200, unique=True)
     release_date = models.DateTimeField()
     esrb_rating=models.ForeignKey(
         EsrbRating, related_name='games', on_delete=models.CASCADE
@@ -31,7 +31,7 @@ class Player(models.Model):
         (FEMALE, 'Female'),
     )        
     created=models.DateTimeField(auto_now_add=True)
-    name=models.CharField(max_length=50)
+    name=models.CharField(max_length=50, unique=True)
     gender=models.CharField(
         max_length=2,
         choices=GENDER_CHOICES,

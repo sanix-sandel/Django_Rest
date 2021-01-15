@@ -53,6 +53,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'django_rest.urls'
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS':
+    #'rest_framework.pagination.LimitOffsetPagination',
+    'games.max_limit_pagination.MaxLimitPagination',
+    'PAGE_SIZE': 4
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
