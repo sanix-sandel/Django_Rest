@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from games.models import*
 import games.views
+from django.contrib.auth.models import User
 
 class EsrbRatingSerializer(serializers.HyperlinkedModelSerializer):
     games=serializers.HyperlinkedRelatedField(
@@ -25,6 +26,7 @@ class GameSerializer(serializers.ModelSerializer):
         queryset=EsrbRating.objects.all(),
         slug_field='description'
     )
+    owner=serializers.ReadOnlyField(source='owner.username')
 
     class Meta:
         model=Game
@@ -35,7 +37,8 @@ class GameSerializer(serializers.ModelSerializer):
             'esrb_rating',
             'played_once',
             'played_times',
-
+            'played_times',
+            'owner'
         )
 
 class ScoreSerializer(serializers.HyperlinkedModelSerializer):
@@ -87,4 +90,20 @@ class PlayerScoreSerializer(serializers.ModelSerializer):
             'game'
         )
 
-       
+class UserGameSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Game
+        fields = (
+            'url',
+            'name'
+        )
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    games = UserGameSerializer(many=True, read_only=True)
+    class Meta:
+        model = User
+        fields = (
+            'url',
+            'id',
+            'username',
+            'games')       

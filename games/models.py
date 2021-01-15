@@ -19,8 +19,16 @@ class Game(models.Model):
     )
     played_once = models.BooleanField(default=False)
     played_times = models.IntegerField(default=0)
+    owner = models.ForeignKey(
+        'auth.User',
+        related_name='games',
+        on_delete=models.CASCADE)
+
     class Meta:
         ordering = ('name',)
+
+    def __str__(self):
+        return self.name    
 
 
 class Player(models.Model):
