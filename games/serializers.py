@@ -86,3 +86,5 @@ class PlayerScoreSerializer(serializers.ModelSerializer):
             'player',
             'game'
         )
+
+       
